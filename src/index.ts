@@ -1,7 +1,9 @@
 import { Elysia, t } from "elysia";
 import { client } from "./models/client";
+import { html } from "@elysiajs/html";
 
 const app = new Elysia()
+  .use(html())
   .get("/notes", () => {
     const allNotes = client.query("SELECT * FROM notes").all();
 
@@ -11,7 +13,6 @@ const app = new Elysia()
     "/notes",
     ({ body }) => {
       const { content } = body;
-
       const createNote = client.query("INSERT INTO notes (content) VALUES (?)").run(content);
 
       return { message: `Create note succes` };
